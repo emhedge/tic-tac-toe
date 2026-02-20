@@ -14,8 +14,9 @@ function Gameboard() {
 
     const getBoard = () => board;
 
-    const addMark = (row, column, player) => {
-        board[row][column].addMark(player)
+    // receives boolean value from setValue(), passes to GameController's playRound
+    const placeMark = (row, column, player) => {
+        return board[row][column].setValue(player)
     }
 
 
@@ -25,20 +26,25 @@ function Gameboard() {
     }
 
 
-    return {getBoard, addMark, printBoard}
+    return {getBoard, placeMark, printBoard}
 }
 
 function Cell() {
     let value = 0;
-
-    const addMark = (player) => {
-        value = player;
+    // returns boolean value based on whether the cell is filled/not
+    const setValue = (player) => {
+        if (!value) {
+            value = player;
+            return true;
+        } else {
+            return false;
+        }
     }
     
     const getValue = () => value;
 
     return {
-        addMark,
+        setValue,
         getValue
     }
 }
@@ -63,23 +69,27 @@ function GameController(
     let activePlayer = players[0];
 
     const switchPlayerTurn = () => {
-        activePlayer = activePlayer === players[0] ? players[1] : players[0];
-    }
+            activePlayer = activePlayer === players[0] ? players[1] : players[0];            
+    } 
+    
     const getActivePlayer = () => activePlayer;
 
     const printNewRound = () => {
         board.printBoard();
         console.log(`${getActivePlayer().name}'s turn.`)
     }
-
+    
     const playRound = (row, column) => {
         console.log(
             `Adding ${getActivePlayer().name}'s mark to row ${row}, column ${column}...`
         );
-        board.addMark(row, column, getActivePlayer().mark);
-
-        switchPlayerTurn();
-        printNewRound();
+        const success = board.placeMark(row, column, getActivePlayer().mark);
+        if (success) {
+            switchPlayerTurn();
+            printNewRound();
+        } else {
+            console.log(`That spot is already marked. Pick again.`)
+        }
     }
 
     printNewRound();
