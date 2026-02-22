@@ -83,13 +83,28 @@ function GameController(
         console.log(
             `Adding ${getActivePlayer().name}'s mark to row ${row}, column ${column}...`
         );
-        const success = board.placeMark(row, column, getActivePlayer().mark);
-        if (success) {
-            switchPlayerTurn();
-            printNewRound();
-        } else {
-            console.log(`That spot is already marked. Pick again.`)
-        }
+
+
+        
+    const success = board.placeMark(row, column, getActivePlayer().mark);
+    const isWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
+
+    if (success && isWin === true) {
+        printNewRound();
+        console.log("A player has won!")
+    } else if (success) {
+        switchPlayerTurn();
+        printNewRound();
+    } else {
+        console.log(`That spot is already marked. Pick again.`)
+    }
+        
+        // check win conditions with 
+        // extract values from the cells first
+        // use some and every to check if any row has a winner
+        
+        
+        
     }
 
     printNewRound();
