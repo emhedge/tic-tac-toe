@@ -84,12 +84,16 @@ function GameController(
             `Adding ${getActivePlayer().name}'s mark to row ${row}, column ${column}...`
         );
 
-
-        
     const success = board.placeMark(row, column, getActivePlayer().mark);
-    const isWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
+    const isRowWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
 
-    if (success && isWin === true) {
+    const getCol = board.getBoard()[0].map((_, colIndex) => 
+        board.getBoard().map(row => row[colIndex])
+    );
+
+    const isColWin = getCol.some(col => col.every(cell => cell.getValue() === getActivePlayer().mark))
+
+    if ((success && isRowWin === true) || (success && isColWin === true)) {
         printNewRound();
         console.log("A player has won!")
     } else if (success) {
@@ -111,7 +115,7 @@ function GameController(
 
     return {
         playRound,
-        getActivePlayer
+        getActivePlayer,
     }
 
 
