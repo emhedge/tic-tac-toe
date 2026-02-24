@@ -84,33 +84,34 @@ function GameController(
             `Adding ${getActivePlayer().name}'s mark to row ${row}, column ${column}...`
         );
 
-    const success = board.placeMark(row, column, getActivePlayer().mark);
-    const isRowWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
+        const success = board.placeMark(row, column, getActivePlayer().mark);
+        
+        const isRowWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
 
-    const getCol = board.getBoard()[0].map((_, colIndex) => 
-        board.getBoard().map(row => row[colIndex])
-    );
+        const getCol = board.getBoard()[0].map((_, colIndex) => 
+            board.getBoard().map(row => row[colIndex])
+        );
+        const isColWin = getCol.some(col => col.every(cell => cell.getValue() === getActivePlayer().mark))
 
-    const isColWin = getCol.some(col => col.every(cell => cell.getValue() === getActivePlayer().mark))
+        const checkDiagonal = board.getBoard().every((row, index) => row[index].getValue() === getActivePlayer().mark);
 
-    if ((success && isRowWin === true) || (success && isColWin === true)) {
-        printNewRound();
-        console.log("A player has won!")
-    } else if (success) {
-        switchPlayerTurn();
-        printNewRound();
-    } else {
-        console.log(`That spot is already marked. Pick again.`)
+        const maxIndex = board.getBoard().length - 1;
+
+        const checkAntiDiagonal = board.getBoard().every((row, index) => row[(maxIndex) - index].getValue() === getActivePlayer().mark)
+
+
+
+        if ((success && isRowWin === true) || (success && isColWin === true) || (success && checkDiagonal === true) || (success && checkAntiDiagonal === true)) {
+            printNewRound();
+            console.log("A player has won!")
+        } else if (success) {
+            switchPlayerTurn();
+            printNewRound();
+        } else {
+            console.log(`That spot is already marked. Pick again.`)    
+            
+        }
     }
-        
-        // check win conditions with 
-        // extract values from the cells first
-        // use some and every to check if any row has a winner
-        
-        
-        
-    }
-
     printNewRound();
 
     return {
