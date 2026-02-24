@@ -86,6 +86,7 @@ function GameController(
 
         const success = board.placeMark(row, column, getActivePlayer().mark);
         
+        // win condition checks
         const isRowWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
 
         const getCol = board.getBoard()[0].map((_, colIndex) => 
@@ -93,25 +94,29 @@ function GameController(
         );
         const isColWin = getCol.some(col => col.every(cell => cell.getValue() === getActivePlayer().mark))
 
-        const checkDiagonal = board.getBoard().every((row, index) => row[index].getValue() === getActivePlayer().mark);
+        const isDiagonalWin = board.getBoard().every((row, index) => row[index].getValue() === getActivePlayer().mark);
 
         const maxIndex = board.getBoard().length - 1;
+        const isAntiDiagonalWin = board.getBoard().every((row, index) => row[(maxIndex) - index].getValue() === getActivePlayer().mark)
 
-        const checkAntiDiagonal = board.getBoard().every((row, index) => row[(maxIndex) - index].getValue() === getActivePlayer().mark)
+        // tie condition check
+        const isTie = board.getBoard().every(row => row.every(cell => cell.getValue() !== 0))
 
-
-
-        if ((success && isRowWin === true) || (success && isColWin === true) || (success && checkDiagonal === true) || (success && checkAntiDiagonal === true)) {
-            printNewRound();
-            console.log("A player has won!")
-        } else if (success) {
-            switchPlayerTurn();
-            printNewRound();
-        } else {
-            console.log(`That spot is already marked. Pick again.`)    
-            
+        if (success) {
+            if ((isRowWin === true) || (isColWin === true) || (isDiagonalWin === true) || (isAntiDiagonalWin === true)) {
+                printNewRound();
+                console.log("A player has won! Play again?")
+                } else if (isTie === true) {
+                    printNewRound();
+                    console.log("Looks like a tie. Play again?")
+                } else {
+                    switchPlayerTurn();
+                    printNewRound();
+                }   
+            }  else {
+                console.log(`That spot is already marked. Pick again.`)    
+            }
         }
-    }
     printNewRound();
 
     return {
