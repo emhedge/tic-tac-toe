@@ -1,5 +1,4 @@
 // logic for the game board
-
 function Gameboard() {
     const rows = 3;
     const columns = 3;
@@ -49,6 +48,39 @@ function Cell() {
     return {
         setValue,
         getValue
+    }
+}
+
+function ScreenController(game) {
+
+    const screen = document.querySelector("#game-board");
+    const boardData = game.getBoard();
+    
+    function updateScreen() {
+        screen.innerHTML = "";
+        boardData.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const box = document.createElement("div");
+                box.setAttribute("class", "board-box");
+                box.dataset.row = rowIndex;
+                box.dataset.column = colIndex;
+                box.textContent = cell.getValue();
+                screen.appendChild(box)
+            })
+        })
+    }
+
+    screen.addEventListener("click", e => {
+        const row = e.target.dataset.row;
+        const column = e.target.dataset.column;
+        game.playRound(row, column)
+        updateScreen();
+    })
+
+    updateScreen();
+
+    return {
+        updateScreen
     }
 }
 
@@ -126,24 +158,25 @@ function GameController(
             printNewRound();
             console.log("A player has won! Play again?")
             resetBoard();
-            } else if (tie) {
-                printNewRound();
-                console.log("Looks like a tie. Play again?")
-                resetBoard();
-            } else {
-                switchPlayerTurn();
-                printNewRound();
-            }   
+        } else if (tie) {
+            printNewRound();
+            console.log("Looks like a tie. Play again?")
+            resetBoard();
+        } else {
+            switchPlayerTurn();
+            printNewRound();
+        }   
           
-        }
+    }
     printNewRound();
 
     return {
         playRound,
         getActivePlayer,
+        getBoard: board.getBoard
     }
-
 
 }
 
 const game = GameController();
+const screenControl = ScreenController(game);

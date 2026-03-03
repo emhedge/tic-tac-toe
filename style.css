@@ -1,3 +1,23 @@
 * {
     font-size: larger;
 }
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(150px, 250px));
+    grid-template-rows: repeat(3, minmax(150px, 250px));
+    /* min-width: 600px;
+    max-width: 80%;
+    min-height: 80vh; */
+}
+
+.board-box {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    min-width: 250px;
+}
