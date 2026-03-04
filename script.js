@@ -54,26 +54,34 @@ function Cell() {
 function ScreenController(game) {
 
     const screen = document.querySelector("#game-board");
-    const boardData = game.getBoard();
     
     function updateScreen() {
-
+        const boardData = game.getBoard();
         screen.innerHTML = "";
         boardData.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 const box = document.createElement("div");
+                const boxImg = document.createElement("img");
+                const cellValue = cell.getValue();
                 box.setAttribute("class", "board-box");
                 box.dataset.row = rowIndex;
                 box.dataset.column = colIndex;
                 if (cell.getValue() == "0") {
                     box.textContent = "";
-                } else {
-                    box.textContent = cell.getValue();
+                } else if ((cell.getValue() == "X") || (cell.getValue() == "O" )){
+                    boxImg.src = `./images/${cellValue}.svg`;
+                    box.appendChild(boxImg);
                 }
-                screen.appendChild(box)
+                screen.appendChild(box);
+                
             })
         })
     }
+    const dialog = document.querySelector("#new-game-dialog")
+    function playAgain() {
+        dialog.showModal(); 
+    }
+
 
     screen.addEventListener("click", e => {
         const row = e.target.dataset.row;
@@ -82,10 +90,19 @@ function ScreenController(game) {
         updateScreen();
     })
 
+    dialog.addEventListener("submit", e => {
+        game.resetBoard();
+        updateScreen();
+    })
+    const closeDialog = document.querySelector("#closeModal");
+    closeDialog.addEventListener("click", e => {
+        dialog.close();
+    })
     updateScreen();
 
     return {
-        updateScreen
+        updateScreen,
+        playAgain
     }
 }
 
@@ -162,11 +179,13 @@ function GameController(
         if (win) {
             printNewRound();
             console.log("A player has won! Play again?")
-            resetBoard();
+            screenControl.playAgain();
+            // resetBoard();
         } else if (tie) {
             printNewRound();
             console.log("Looks like a tie. Play again?")
-            resetBoard();
+            playAgain();
+            // resetBoard();
         } else {
             switchPlayerTurn();
             printNewRound();
@@ -178,7 +197,8 @@ function GameController(
     return {
         playRound,
         getActivePlayer,
-        getBoard: board.getBoard
+        getBoard: board.getBoard,
+        resetBoard
     }
 
 }
