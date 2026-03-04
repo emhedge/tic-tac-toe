@@ -86,6 +86,7 @@ function ScreenController(game) {
     screen.addEventListener("click", e => {
         const row = e.target.dataset.row;
         const column = e.target.dataset.column;
+        if (!row || !column) return;
         game.playRound(row, column)
         updateScreen();
     })
@@ -180,12 +181,10 @@ function GameController(
             printNewRound();
             console.log("A player has won! Play again?")
             screenControl.playAgain();
-            // resetBoard();
         } else if (tie) {
             printNewRound();
             console.log("Looks like a tie. Play again?")
-            playAgain();
-            // resetBoard();
+            screenControl.playAgain();
         } else {
             switchPlayerTurn();
             printNewRound();
