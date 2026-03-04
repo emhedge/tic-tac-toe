@@ -57,6 +57,7 @@ function ScreenController(game) {
     const boardData = game.getBoard();
     
     function updateScreen() {
+
         screen.innerHTML = "";
         boardData.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
@@ -64,7 +65,11 @@ function ScreenController(game) {
                 box.setAttribute("class", "board-box");
                 box.dataset.row = rowIndex;
                 box.dataset.column = colIndex;
-                box.textContent = cell.getValue();
+                if (cell.getValue() == "0") {
+                    box.textContent = "";
+                } else {
+                    box.textContent = cell.getValue();
+                }
                 screen.appendChild(box)
             })
         })
