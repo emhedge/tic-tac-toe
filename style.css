@@ -18,6 +18,27 @@
     justify-content: center;
 }
 
+.board-box img {
+    width: 90%;
+}
+
+#game-board[data-current-player="X"] .board-box:empty:hover {
+    background-image: url("./images/X.svg");
+    background-color: grey;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+}
+#game-board[data-current-player="O"] .board-box:empty:hover {
+    background-image: url("./images/O.svg");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: grey;
+    opacity: 0.3;
+}
+
 dialog {
     &[open] {
     display: flex;
@@ -45,8 +66,4 @@ form {
     width: 90%;
     height: auto;
     gap: 1.3em;
-}
-
-img {
-    min-width: 250px;
 }

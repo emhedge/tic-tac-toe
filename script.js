@@ -58,22 +58,24 @@ function ScreenController(game) {
     function updateScreen() {
         const boardData = game.getBoard();
         screen.innerHTML = "";
+        game.getActivePlayer().mark === "O" ? screen.setAttribute("data-current-player", "O") : screen.setAttribute("data-current-player", "X");
+        console.log(screen.dataset.currentPlayer)
         boardData.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 const box = document.createElement("div");
-                const boxImg = document.createElement("img");
                 const cellValue = cell.getValue();
                 box.setAttribute("class", "board-box");
                 box.dataset.row = rowIndex;
                 box.dataset.column = colIndex;
-                if (cell.getValue() == "0") {
-                    box.textContent = "";
-                } else if ((cell.getValue() == "X") || (cell.getValue() == "O" )){
+                if (cellValue == "0") {
+                    // box.textContent = "";
+                } else if (cellValue !== "0"){
+                    const boxImg = document.createElement("img");
                     boxImg.src = `./images/${cellValue}.svg`;
                     box.appendChild(boxImg);
                 }
                 screen.appendChild(box);
-                
+
             })
         })
     }
