@@ -10,6 +10,13 @@
     display:none;
 }
 
+#scoreboard {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    justify-content: space-between;
+}
+
 #game-board {
     display: grid;
     grid-template-columns: repeat(3, minmax(150px, 250px));

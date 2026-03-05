@@ -51,8 +51,11 @@ function Cell() {
     }
 }
 
-function ScreenController(game) {
 
+function ScreenController(game) {
+    
+    const p1score = document.querySelector("#player-1-score")
+    const p2score = document.querySelector("#player-2-score")
     const screen = document.querySelector("#game-board");
     
     function updateScreen() {
@@ -76,12 +79,15 @@ function ScreenController(game) {
 
             })
         })
+        const players = game.getPlayers();
+        p1score.textContent = players[0].score;
+        p2score.textContent = players[1].score;
+        
     }
     const dialog = document.querySelector("#new-game-dialog")
     function playAgain() {
         dialog.showModal(); 
     }
-
 
     screen.addEventListener("click", e => {
         const row = e.target.dataset.row;
@@ -99,6 +105,12 @@ function ScreenController(game) {
     closeDialog.addEventListener("click", e => {
         dialog.close();
     })
+
+    const newGameBtn = document.querySelector("#new-match");
+    newGameBtn.addEventListener("click", e => {
+        game.resetBoard();
+        updateScreen();
+    })
     updateScreen();
 
     return {
@@ -107,11 +119,10 @@ function ScreenController(game) {
     }
 }
 
+// name inputs
 const nameForm = document.querySelector("#name-form")
 let playerOne = "";
 let playerTwo = "";
-
-
 nameForm.addEventListener("submit", e => {
     e.preventDefault();
     playerOne = document.querySelector("#player-1").value;
@@ -121,24 +132,23 @@ nameForm.addEventListener("submit", e => {
     nameForm.classList.add("hidden");
 })
 
-
-
+// game
 function GameController(
     playerOneName = playerOne,
     playerTwoName = playerTwo
 ) {
-    const board = Gameboard();
 
-    const resetBoard = board.newBoard;
-
+    // player logic
     const players = [
         {
             name: playerOneName,
-            mark: "O"
+            mark: "O",
+            score: 0
         },
         {
             name: playerTwoName,
-            mark: "X"
+            mark: "X",
+            score: 0
         }
     ];
 
@@ -149,12 +159,17 @@ function GameController(
     } 
     
     const getActivePlayer = () => activePlayer;
+    const getPlayers = () => players;
 
+    // board logic
+    const board = Gameboard();
+    const resetBoard = board.newBoard;
     const printNewRound = () => {
         board.printBoard();
         console.log(`${getActivePlayer().name}'s turn.`)
     }
-    
+
+    // game end checks
     function checkWin() {
         // win condition checks
         const isRowWin = board.getBoard().some(row => row.every(cell => cell.getValue() === getActivePlayer().mark))
@@ -178,6 +193,7 @@ function GameController(
         return isTie;
     }
 
+    // play round logic
     const playRound = (row, column) => {
         console.log(
             `Adding ${getActivePlayer().name}'s mark to row ${row}, column ${column}...`
@@ -193,14 +209,17 @@ function GameController(
         const win = checkWin();
         const tie = checkTie();
 
+        
+
         if (win) {
             printNewRound();
             console.log(`${getActivePlayer().name} has won! Play again?`)
-            screenControl.playAgain();
+            activePlayer.score += 1;
+
         } else if (tie) {
             printNewRound();
             console.log("Looks like a tie. Play again?")
-            screenControl.playAgain();
+
         } else {
             switchPlayerTurn();
             printNewRound();
@@ -212,8 +231,9 @@ function GameController(
     return {
         playRound,
         getActivePlayer,
+        getPlayers,
         getBoard: board.getBoard,
-        resetBoard
+        resetBoard,
     }
 
 }
