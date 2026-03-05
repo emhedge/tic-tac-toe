@@ -67,9 +67,7 @@ function ScreenController(game) {
                 box.setAttribute("class", "board-box");
                 box.dataset.row = rowIndex;
                 box.dataset.column = colIndex;
-                if (cellValue == "0") {
-                    // box.textContent = "";
-                } else if (cellValue !== "0"){
+                if (cellValue !== 0){
                     const boxImg = document.createElement("img");
                     boxImg.src = `./images/${cellValue}.svg`;
                     box.appendChild(boxImg);
@@ -109,9 +107,25 @@ function ScreenController(game) {
     }
 }
 
+const nameForm = document.querySelector("#name-form")
+let playerOne = "";
+let playerTwo = "";
+
+
+nameForm.addEventListener("submit", e => {
+    e.preventDefault();
+    playerOne = document.querySelector("#player-1").value;
+    playerTwo = document.querySelector("#player-2").value;
+    const game = GameController();
+    const screenControl = ScreenController(game);
+    nameForm.classList.add("hidden");
+})
+
+
+
 function GameController(
-    playerOneName = "Player One",
-    playerTwoName = "Player Two"
+    playerOneName = playerOne,
+    playerTwoName = playerTwo
 ) {
     const board = Gameboard();
 
@@ -181,7 +195,7 @@ function GameController(
 
         if (win) {
             printNewRound();
-            console.log("A player has won! Play again?")
+            console.log(`${getActivePlayer().name} has won! Play again?`)
             screenControl.playAgain();
         } else if (tie) {
             printNewRound();
@@ -204,5 +218,3 @@ function GameController(
 
 }
 
-const game = GameController();
-const screenControl = ScreenController(game);

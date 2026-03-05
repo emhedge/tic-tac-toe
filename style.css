@@ -2,6 +2,14 @@
     /* font-size: larger; */
 }
 
+#name-form {
+    /* TODO: style later */
+}
+
+.hidden {
+    display:none;
+}
+
 #game-board {
     display: grid;
     grid-template-columns: repeat(3, minmax(150px, 250px));
