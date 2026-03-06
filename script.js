@@ -84,19 +84,29 @@ function ScreenController(game) {
         p2score.textContent = players[1].score;
         
     }
-    const dialog = document.querySelector("#new-game-dialog")
+    const dialog = document.querySelector("#new-game-dialog");
+    const playAgainHeader = document.querySelector("#play-again-header");
+
     function playAgain() {
+        playAgainHeader.textContent = `${game.getActivePlayer().name} has won! Play again?`
         dialog.showModal(); 
     }
 
     screen.addEventListener("click", e => {
         const row = e.target.dataset.row;
         const column = e.target.dataset.column;
-        if (!row || !column) return;
-        game.playRound(row, column)
+        if (!row || !column || game.isOver()) return;
+        game.playRound(row, column);
         updateScreen();
+
+        if (game.checkWin()) {
+            playAgain();
+        } else if (game.checkTie()) {
+            playAgain();
+        }
     })
 
+    
     dialog.addEventListener("submit", e => {
         game.resetBoard();
         updateScreen();
@@ -128,9 +138,10 @@ nameForm.addEventListener("submit", e => {
     playerOne = document.querySelector("#player-1").value;
     playerTwo = document.querySelector("#player-2").value;
     const game = GameController();
-    const screenControl = ScreenController(game);
     nameForm.classList.add("hidden");
+    const screenControl = ScreenController(game);
 })
+
 
 // game
 function GameController(
@@ -193,6 +204,11 @@ function GameController(
         return isTie;
     }
 
+    function isOver() {
+        let isGameOver = false;
+        return isGameOver = (checkWin() == true || checkTie == true);
+    }
+
     // play round logic
     const playRound = (row, column) => {
         console.log(
@@ -210,7 +226,7 @@ function GameController(
         const tie = checkTie();
 
         
-
+        
         if (win) {
             printNewRound();
             console.log(`${getActivePlayer().name} has won! Play again?`)
@@ -234,6 +250,9 @@ function GameController(
         getPlayers,
         getBoard: board.getBoard,
         resetBoard,
+        checkWin,
+        checkTie,
+        isOver
     }
 
 }

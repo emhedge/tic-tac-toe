@@ -1,5 +1,10 @@
+@font-face {
+    font-family: "Archivo";
+    src: url(fonts/Archivo-VariableFont_wdth\,wght.woff2);
+}
+
 * {
-    /* font-size: larger; */
+    font-family: "Archivo", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #name-form {
@@ -62,14 +67,26 @@ dialog {
   }
     max-height: 90vh;
     overflow-y: auto;
-    inset-block-start: 5dvb;
+    /* inset-block-start: 5dvb; */
     border: none;
     border-radius: 8px;
     margin: auto;
     inline-size: min(30ch, 40dvi);
     margin-inline: auto;
-    padding: 20px;
+    padding: 20px 40px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+dialog p {
+    font-size: 2em;
+    text-wrap-style: balance;
+    text-align: center;
+}
+
+#new-game-form {
+    display: flex;
+    flex-direction: column;
+    
 }
 
 dialog::backdrop {
@@ -81,4 +98,16 @@ form {
     width: 90%;
     height: auto;
     gap: 1.3em;
+}
+.buttons-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+dialog button {
+    font-size: 1.2em;
+    line-height: 1.8em;
+    width: 5em;
+    border: none;
+    border-radius: 20px;
 }
