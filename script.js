@@ -140,6 +140,10 @@ nameForm.addEventListener("submit", e => {
     const game = GameController();
     nameForm.classList.add("hidden");
     const screenControl = ScreenController(game);
+    const p1name = document.querySelector("#player-1-name")
+    const p2name = document.querySelector("#player-2-name")
+    p1name.textContent = playerOne;
+    p2name.textContent = playerTwo;
 })
 
 
