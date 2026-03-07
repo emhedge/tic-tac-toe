@@ -51,13 +51,17 @@ function Cell() {
     }
 }
 
+const newGameBtn = document.querySelector("#new-match");
+newGameBtn.classList.add("hidden");
+
+
 
 function ScreenController(game) {
     
     const p1score = document.querySelector("#player-1-score")
     const p2score = document.querySelector("#player-2-score")
     const screen = document.querySelector("#game-board");
-    
+    newGameBtn.classList.remove("hidden");
     function updateScreen() {
         const boardData = game.getBoard();
         screen.innerHTML = "";
@@ -116,7 +120,7 @@ function ScreenController(game) {
         dialog.close();
     })
 
-    const newGameBtn = document.querySelector("#new-match");
+    
     newGameBtn.addEventListener("click", e => {
         game.resetBoard();
         updateScreen();
@@ -128,9 +132,13 @@ function ScreenController(game) {
         playAgain
     }
 }
+const p1name = document.querySelector("#player-1-name")
+const p2name = document.querySelector("#player-2-name")
+p1name.textContent = "Player 1";
+p2name.textContent = "Player 2";
 
 // name inputs
-const nameForm = document.querySelector("#name-form")
+const nameForm = document.querySelector("#name")
 let playerOne = "";
 let playerTwo = "";
 nameForm.addEventListener("submit", e => {
@@ -138,12 +146,10 @@ nameForm.addEventListener("submit", e => {
     playerOne = document.querySelector("#player-1").value;
     playerTwo = document.querySelector("#player-2").value;
     const game = GameController();
-    nameForm.classList.add("hidden");
     const screenControl = ScreenController(game);
-    const p1name = document.querySelector("#player-1-name")
-    const p2name = document.querySelector("#player-2-name")
-    p1name.textContent = playerOne;
-    p2name.textContent = playerTwo;
+    nameForm.classList.add("hidden");
+    p1name.textContent = `${playerOne}`;
+    p2name.textContent = `${playerTwo}`;
 })
 
 

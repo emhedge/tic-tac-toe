@@ -8,42 +8,53 @@
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-    <p>Tic Tac Toe Game</p>
+    <header id="header">
+        <div id="title">
+            <h1>Tic Tac Toe</h1>
+        </div>
+        <div id="console">
+            <!-- two divs with scores, reset button -->
+            <div id="scoreboard">
+                <div class="scoreboard-display" id="p1">
+                    <div class="scoreboard-name" id="player-1-name"></div>
+                    <div class="scoreboard-score" id="player-1-score">0</div>
+                </div>
+                <div id="reset-game">
+                    <button type="button" id="new-match">New Match</button>
+                </div>
+                <div class="scoreboard-display" id="p2">
+                    <div class="scoreboard-name" id="player-2-name"></div>
+                    <div class="scoreboard-score" id="player-2-score">0</div>
+                </div>
+            </div>
+        </div>
+        <div id="name">
+            <form action="" id="name-form">
+                <div id="player-1-div" class="player-name">
+                    <label for="player-1">Player 1 Name:</label>
+                    <input type="text" name="player-1" id="player-1">
+                </div>
+                <div id="player-2-div" class="player-name">
+                    <label for="player-2">Player 2 Name:</label>
+                    <input type="text" name="player-2" id="player-2">
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </header>
 
-    <form action="" id="name-form">
-        <label for="player-1">Player 1 Name:</label>
-        <input type="text" name="player-1" id="player-1">
-        <label for="player-2">Player 2 Name:</label>
-        <input type="text" name="player-2" id="player-2">
-        <input type="submit" value="Submit">
-    </form>
-    <div id="game-header"></div>
-    <div id="console">
-        <!-- two divs with scores, reset button -->
-         <div id="scoreboard">
-            <div id="p1">
-                <div class="scoreboard-display" id="player-1-name"></div>
-                <div class="scoreboard-display" id="player-1-score">0</div>
-            </div>
-            <div id="p2">
-                <div class="scoreboard-display" id="player-2-name"></div>
-                <div class="scoreboard-display" id="player-2-score">0</div>
-            </div>
-         </div>
-         <div id="reset-game">
-            <button type="button" id="new-match">New Match</button>
-         </div>
-    </div>
-    <div id="game-board">
-    </div>
-    <dialog id="new-game-dialog">
-        <form method="dialog" id="new-game-form">
-            <p id="play-again-header"></p>
-            <div class="buttons-container">
-                <button type="submit">Sure!</button>
-                <button type="button" id="closeModal">Nah...</button>
-            </div>
-        </form>
+    <div id="game">
+        <div id="game-board">
+        </div>
+        <dialog id="new-game-dialog">
+            <form method="dialog" id="new-game-form">
+                <p id="play-again-header"></p>
+                <div class="buttons-container">
+                    <button type="submit">Sure!</button>
+                    <button type="button" id="closeModal">Nah...</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
