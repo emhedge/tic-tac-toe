@@ -79,7 +79,8 @@ input[type="submit"] {
 
 #scoreboard,
 input[type="submit"],
-input[type="text"] {
+input[type="text"],
+#new-match {
     border: 1px black solid;
     border-radius: 5px;
 }
@@ -105,16 +106,15 @@ input[type="submit"] {
 
 #game-board {
     display: grid;
-    grid-template-columns: repeat(3, minmax(175px, 275px));
-    grid-template-rows: repeat(3, minmax(175px, 275px));
-    /* min-width: 600px;
-    max-width: 80%;
-    min-height: 80vh; */
+    grid-template-columns: repeat(3, minmax(125px, 275px));
+    grid-template-rows: repeat(3, auto);
 }
 
 .board-box {
     border: 1px solid black;
+    border-radius: 5px;
     display: flex;
+    aspect-ratio: 1 / 1;
     align-items: center;
     justify-content: center;
 }

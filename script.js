@@ -1,9 +1,9 @@
 // logic for the game board
 function Gameboard() {
+    // init board setup
     const rows = 3;
     const columns = 3;
     const board = [];
-
     const newBoard = () => {
         for (let i = 0; i < rows; i++) {
             board[i] = [];
@@ -13,7 +13,7 @@ function Gameboard() {
         }
         
     }
-    
+    // pass board
     const getBoard = () => board;
     
     // receives boolean value from setValue(), passes to GameController's playRound
@@ -51,87 +51,11 @@ function Cell() {
     }
 }
 
+// init and hide newGameBtn
 const newGameBtn = document.querySelector("#new-match");
 newGameBtn.classList.add("hidden");
 
-
-
-function ScreenController(game) {
-    
-    const p1score = document.querySelector("#player-1-score")
-    const p2score = document.querySelector("#player-2-score")
-    const screen = document.querySelector("#game-board");
-    newGameBtn.classList.remove("hidden");
-    function updateScreen() {
-        const boardData = game.getBoard();
-        screen.innerHTML = "";
-        game.getActivePlayer().mark === "O" ? screen.setAttribute("data-current-player", "O") : screen.setAttribute("data-current-player", "X");
-        console.log(screen.dataset.currentPlayer)
-        boardData.forEach((row, rowIndex) => {
-            row.forEach((cell, colIndex) => {
-                const box = document.createElement("div");
-                const cellValue = cell.getValue();
-                box.setAttribute("class", "board-box");
-                box.dataset.row = rowIndex;
-                box.dataset.column = colIndex;
-                if (cellValue !== 0){
-                    const boxImg = document.createElement("img");
-                    boxImg.src = `./images/${cellValue}.svg`;
-                    box.appendChild(boxImg);
-                }
-                screen.appendChild(box);
-
-            })
-        })
-        const players = game.getPlayers();
-        p1score.textContent = players[0].score;
-        p2score.textContent = players[1].score;
-        
-    }
-    const dialog = document.querySelector("#new-game-dialog");
-    const playAgainHeader = document.querySelector("#play-again-header");
-
-    function playAgain() {
-        playAgainHeader.textContent = `${game.getActivePlayer().name} has won! Play again?`
-        dialog.showModal(); 
-    }
-
-    screen.addEventListener("click", e => {
-        const row = e.target.dataset.row;
-        const column = e.target.dataset.column;
-        if (!row || !column || game.isOver()) return;
-        game.playRound(row, column);
-        updateScreen();
-
-        if (game.checkWin()) {
-            playAgain();
-        } else if (game.checkTie()) {
-            playAgain();
-        }
-    })
-
-    
-    dialog.addEventListener("submit", e => {
-        game.resetBoard();
-        updateScreen();
-    })
-    const closeDialog = document.querySelector("#closeModal");
-    closeDialog.addEventListener("click", e => {
-        dialog.close();
-    })
-
-    
-    newGameBtn.addEventListener("click", e => {
-        game.resetBoard();
-        updateScreen();
-    })
-    updateScreen();
-
-    return {
-        updateScreen,
-        playAgain
-    }
-}
+// init default player names
 const p1name = document.querySelector("#player-1-name")
 const p2name = document.querySelector("#player-2-name")
 p1name.textContent = "Player 1";
@@ -151,6 +75,100 @@ nameForm.addEventListener("submit", e => {
     p1name.textContent = `${playerOne}`;
     p2name.textContent = `${playerTwo}`;
 })
+
+function ScreenController(game) {
+    // init scores
+    const p1score = document.querySelector("#player-1-score")
+    const p2score = document.querySelector("#player-2-score")
+    const screen = document.querySelector("#game-board");
+    newGameBtn.classList.remove("hidden");
+    
+    function updateScreen() {
+        
+        const boardData = game.getBoard();
+        screen.innerHTML = "";
+        
+        // set active mark
+        game.getActivePlayer().mark === "O" ? screen.setAttribute("data-current-player", "O") : screen.setAttribute("data-current-player", "X");
+        
+        // gameboard rendering
+        boardData.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const box = document.createElement("div");
+                const cellValue = cell.getValue();
+                box.setAttribute("class", "board-box");
+                box.dataset.row = rowIndex;
+                box.dataset.column = colIndex;
+                if (cellValue !== 0){
+                    const boxImg = document.createElement("img");
+                    boxImg.src = `./images/${cellValue}.svg`;
+                    box.appendChild(boxImg);
+                }
+                screen.appendChild(box);
+
+            })
+        })
+        // scoreboard scores
+        const players = game.getPlayers();
+        p1score.textContent = players[0].score;
+        p2score.textContent = players[1].score;
+        
+    }
+
+    // end-game dialog
+    const dialog = document.querySelector("#new-game-dialog");
+    const playAgainHeader = document.querySelector("#play-again-header");
+
+    function playAgainWin() {
+        playAgainHeader.textContent = `${game.getActivePlayer().name} has won! Play again?`
+        dialog.showModal(); 
+    }
+    function playAgainTie() {
+        playAgainHeader.textContent = `Looks like a tie! Play again?`
+        dialog.showModal(); 
+    }
+    
+    screen.addEventListener("click", e => {
+        const row = e.target.dataset.row;
+        const column = e.target.dataset.column;
+        if (!row || !column || game.isOver()) return;
+        game.playRound(row, column);
+        updateScreen();
+
+        if (game.checkWin()) {
+            playAgainWin();
+        } else if (game.checkTie()) {
+            playAgainTie();
+        }
+    })
+
+    // new game dialog handler
+    dialog.addEventListener("submit", e => {
+        game.resetBoard();
+        updateScreen();
+    })
+    // no new game handler
+    const closeDialog = document.querySelector("#closeModal");
+    closeDialog.addEventListener("click", e => {
+        dialog.close();
+    })
+
+    // new game btn handler
+    newGameBtn.addEventListener("click", e => {
+        game.resetBoard();
+        updateScreen();
+    })
+    updateScreen();
+
+    return {
+        updateScreen,
+        playAgainWin,
+        playAgainTie
+    }
+}
+
+
+
 
 
 // game
