@@ -28,8 +28,27 @@
                 </div>
             </div>
         </div>
+        <div id="game-select">
+            <div id="game-select-title">How would you like to play?</div>
+            <div id="game-select-btns" class="btn-div">
+                <button id="solo">Solo (vs CPU)</button>
+                <button id="duo">Two Player</button>
+            </div>
+        </div>
         <div id="name">
-            <form action="" id="name-form">
+            <div id="name-input-title">Please input your name(s).</div>
+            <form id="solo-name-form" class="name-form">
+                <div id="player-1-div" class="player-name">
+                    <label for="player-1">Player 1 Name:</label>
+                    <input type="text" name="player-1" id="player-1">
+                </div>
+                <div id="player-2-div" class="player-name">
+                    <label for="player-2">Player 2 Name:</label>
+                    <input type="text" name="player-2" id="player-2" value="CPU" disabled>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+            <form id="duo-name-form" class="name-form">
                 <div id="player-1-div" class="player-name">
                     <label for="player-1">Player 1 Name:</label>
                     <input type="text" name="player-1" id="player-1">

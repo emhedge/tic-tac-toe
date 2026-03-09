@@ -17,7 +17,6 @@ body {
 }
 
 #console,
-#name-form,
 #game {
     display: flex;
     justify-content: center;
@@ -42,14 +41,14 @@ header {
 #console {
     align-items: space-evenly;
     height: 150px;
-    width: 500px;
+    width: clamp(475px, 70%, 825px);
 }
 
 #scoreboard {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     height: 100%;
-    width: 500px;
+    width: 100%;
     /* margin: 10px; */
     background-color: black;
     color: white;
@@ -77,6 +76,11 @@ input[type="submit"] {
     background-color: white;
 }
 
+#new-match:hover,
+input[type="submit"]:hover {
+    transform: scale(1.05);
+}
+
 #scoreboard,
 input[type="submit"],
 input[type="text"],
@@ -91,8 +95,14 @@ input[type="text"] {
 
 #name {
     display: flex;
-    width: 700px;
+    flex-direction: column;
     justify-content: center;
+}
+
+.name-form {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
 }
 
 .player-name {
@@ -106,6 +116,7 @@ input[type="submit"] {
 
 #game-board {
     display: grid;
+    width: clamp(475px, 70%, 825px);
     grid-template-columns: repeat(3, minmax(125px, 275px));
     grid-template-rows: repeat(3, auto);
 }
@@ -150,7 +161,7 @@ dialog {
     overflow-y: auto;
     /* inset-block-start: 5dvb; */
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     margin: auto;
     inline-size: min(30ch, 40dvi);
     margin-inline: auto;
@@ -164,10 +175,35 @@ dialog p {
     text-align: center;
 }
 
+#game-select,
 #new-game-form {
     display: flex;
     flex-direction: column;
-    
+}
+
+#game-select,
+#name {
+    gap: 20px;
+    align-items: center;
+}
+
+#game-select-btns {
+    display: flex;
+    gap: 20px;
+}
+
+#game-select-title,
+#name-input-title {
+    font-size: 1.5em;
+}
+
+#solo,
+#duo {
+    font-size: 1.2em;
+    line-height: 2.5em;
+    width: 10em;
+    border: none;
+    border-radius: 5px;
 }
 
 dialog::backdrop {
@@ -190,7 +226,7 @@ dialog button {
     line-height: 1.8em;
     width: 5em;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
 }
 
 .hidden {

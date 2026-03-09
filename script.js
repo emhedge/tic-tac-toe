@@ -61,20 +61,44 @@ const p2name = document.querySelector("#player-2-name")
 p1name.textContent = "Player 1";
 p2name.textContent = "Player 2";
 
-// name inputs
-const nameForm = document.querySelector("#name")
+// game select inputs
+const soloBtn = document.querySelector("#solo");
+const duoBtn = document.querySelector("#duo");
+const gameSelect = document.querySelector("#game-select")
+const soloNameForm = document.querySelector("#solo-name-form")
+const duoNameForm = document.querySelector("#duo-name-form")
+
+soloBtn.addEventListener("click", e => {
+    gameSelect.classList.add("hidden");
+    nameDiv.classList.remove("hidden");
+    duoNameForm.classList.add("hidden")
+})
+
+duoBtn.addEventListener("click", e => {
+    gameSelect.classList.add("hidden");
+    nameDiv.classList.remove("hidden");
+    soloNameForm.classList.add("hidden")
+})
+
+
+
+// duo player name inputs
+const nameDiv = document.querySelector("#name");
+nameDiv.classList.add("hidden");
 let playerOne = "";
 let playerTwo = "";
-nameForm.addEventListener("submit", e => {
+nameDiv.addEventListener("submit", e => {
     e.preventDefault();
     playerOne = document.querySelector("#player-1").value;
     playerTwo = document.querySelector("#player-2").value;
     const game = GameController();
     const screenControl = ScreenController(game);
-    nameForm.classList.add("hidden");
+    nameDiv.classList.add("hidden");
     p1name.textContent = `${playerOne}`;
     p2name.textContent = `${playerTwo}`;
 })
+
+
 
 function ScreenController(game) {
     // init scores
@@ -167,11 +191,7 @@ function ScreenController(game) {
     }
 }
 
-
-
-
-
-// game
+// game logic
 function GameController(
     playerOneName = playerOne,
     playerTwoName = playerTwo
@@ -232,6 +252,7 @@ function GameController(
         return isTie;
     }
 
+    // pass isGameOver to ScreenController to prevent post-game clicks
     function isOver() {
         let isGameOver = false;
         return isGameOver = (checkWin() == true || checkTie == true);
