@@ -151,7 +151,7 @@ function ScreenController(game, newMatchBtn) {
     const p1score = document.querySelector("#player-1-score")
     const p2score = document.querySelector("#player-2-score")
     const screen = document.querySelector("#game-board");
-    
+    const turnDisplay = document.querySelector("#turn-display")
     
     function updateScreen() {
         
@@ -182,6 +182,7 @@ function ScreenController(game, newMatchBtn) {
         const players = game.getPlayers();
         p1score.textContent = players[0].score;
         p2score.textContent = players[1].score;
+        turnDisplay.textContent = `${game.getActivePlayer().name}'s turn... (${game.getActivePlayer().mark})`;
         
     }
 
@@ -212,10 +213,12 @@ function ScreenController(game, newMatchBtn) {
         }
     })
 
-    // new game dialog handler
+    // new round dialog handler
     dialog.addEventListener("submit", e => {
+        game.switchPlayerTurn();
         game.resetBoard();
         updateScreen();
+        
     })
     // no new game handler
     const closeDialog = document.querySelector("#closeModal");
@@ -344,6 +347,7 @@ function GameController(allValues) {
 
     return {
         playRound,
+        switchPlayerTurn,
         getActivePlayer,
         getPlayers,
         getBoard: board.getBoard,

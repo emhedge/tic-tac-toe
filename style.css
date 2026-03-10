@@ -46,7 +46,7 @@ header {
 
 #scoreboard {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     height: 100%;
     width: 100%;
     /* margin: 10px; */
@@ -60,12 +60,17 @@ header {
     align-items: center;
 }
 
-.scoreboard-name {
+.scoreboard-name,
+#turn-display {
     font-size: 1.5em;
 }
 
 .scoreboard-score {
     font-size: 4em;
+}
+
+#center-display {
+    gap: 20px;
 }
 
 #new-match,
@@ -176,7 +181,7 @@ dialog p {
 }
 
 #game-select,
-#new-game-form {
+#new-round-form {
     display: flex;
     flex-direction: column;
 }
