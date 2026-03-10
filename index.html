@@ -37,7 +37,7 @@
         </div>
         <div id="name">
             <div id="name-input-title">Please input your name(s).</div>
-            <form id="solo-name-form" class="name-form">
+            <!-- <form id="solo-name-form" class="name-form">
                 <div id="player-1-div" class="player-name">
                     <label for="player-1">Player 1 Name:</label>
                     <input type="text" name="player-1" id="player-1">
@@ -47,15 +47,27 @@
                     <input type="text" name="player-2" id="player-2" value="CPU" disabled>
                 </div>
                 <input type="submit" value="Submit">
-            </form>
+            </form> -->
             <form id="duo-name-form" class="name-form">
-                <div id="player-1-div" class="player-name">
-                    <label for="player-1">Player 1 Name:</label>
-                    <input type="text" name="player-1" id="player-1">
+                <div id="p1-div" class="player-name">
+                    <label for="p1-name">Player 1 Name:</label>
+                    <input type="text" name="p1-name" id="p1-name">
+                    <div id="player-1-radio" class="mark-radio" required>
+                        <label for="X">X</label>
+                        <input type="radio" id="X" name="p1-mark" value="X">
+                        <label for="O">O</label>
+                        <input type="radio" id="O" name="p1-mark" value="O">
+                    </div>
                 </div>
-                <div id="player-2-div" class="player-name">
-                    <label for="player-2">Player 2 Name:</label>
-                    <input type="text" name="player-2" id="player-2">
+                <div id="p2-div" class="player-name">
+                    <label for="p2-name">Player 2 Name:</label>
+                    <input type="text" name="p2-name" id="p2-name">
+                    <div id="player-2-radio" class="mark-radio" required>
+                        <label for="X">X</label>
+                        <input type="radio" id="X" name="p2-mark" value="X">
+                        <label for="O">O</label>
+                        <input type="radio" id="O" name="p2-mark" value="O">
+                    </div>
                 </div>
                 <input type="submit" value="Submit">
             </form>
@@ -65,8 +77,8 @@
     <div id="game">
         <div id="game-board">
         </div>
-        <dialog id="new-game-dialog">
-            <form method="dialog" id="new-game-form">
+        <dialog id="new-round-dialog">
+            <form method="dialog" id="new-round-form">
                 <p id="play-again-header"></p>
                 <div class="buttons-container">
                     <button type="submit">Sure!</button>

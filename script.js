@@ -51,61 +51,107 @@ function Cell() {
     }
 }
 
-// init and hide newGameBtn
-const newGameBtn = document.querySelector("#new-match");
-newGameBtn.classList.add("hidden");
-
-// init default player names
-const p1name = document.querySelector("#player-1-name")
-const p2name = document.querySelector("#player-2-name")
-p1name.textContent = "Player 1";
-p2name.textContent = "Player 2";
-
-// game select inputs
-const soloBtn = document.querySelector("#solo");
-const duoBtn = document.querySelector("#duo");
-const gameSelect = document.querySelector("#game-select")
-const soloNameForm = document.querySelector("#solo-name-form")
-const duoNameForm = document.querySelector("#duo-name-form")
-
-soloBtn.addEventListener("click", e => {
+const GameSetup = (function() {
+    // private variables (selectors)
+    
+    const p1NameDiv = document.querySelector("#player-1-name")
+    const p2NameDiv = document.querySelector("#player-2-name")
+    const gameSelect = document.querySelector("#game-select")
+    const nameDiv = document.querySelector("#name");
+    const p1MarkO = document.querySelector('input[name="p1-mark"][value="O"]')
+    const p2MarkO = document.querySelector('input[name="p2-mark"][value="O"]')
+    const p1MarkX = document.querySelector('input[name="p1-mark"][value="X"]')
+    const p2MarkX = document.querySelector('input[name="p2-mark"][value="X"]')
     gameSelect.classList.add("hidden");
-    nameDiv.classList.remove("hidden");
-    duoNameForm.classList.add("hidden")
-})
-
-duoBtn.addEventListener("click", e => {
-    gameSelect.classList.add("hidden");
-    nameDiv.classList.remove("hidden");
-    soloNameForm.classList.add("hidden")
-})
+    const newMatchBtn = document.querySelector("#new-match");
+    
+    
 
 
+    function getDefaultGame() {    
+        // init default player names
+        p1NameDiv.textContent = "Player 1";
+        p2NameDiv.textContent = "Player 2";
+    }
+    // init and hide newMatchBtn
+    
+    // game select inputs
+    // TODO add solo player mode
+    // const soloBtn = document.querySelector("#solo");
+    // const duoBtn = document.querySelector("#duo");
+    // const soloNameForm = document.querySelector("#solo-name-form")
+    
+    // soloBtn.addEventListener("click", e => {
+    //     gameSelect.classList.add("hidden");
+    //     nameDiv.classList.remove("hidden");
+    //     duoNameForm.classList.add("hidden")
+    // })
+    
+    // duoBtn.addEventListener("click", e => {
+    //     gameSelect.classList.add("hidden");
+    //     nameDiv.classList.remove("hidden");
+    //     soloNameForm.classList.add("hidden")
+    // })
+    
+    function getNameInput() {
+        // default/duo player name inputs
+        // nameDiv.classList.add("hidden");
+        newMatchBtn.classList.add("hidden")
+        nameDiv.addEventListener("submit", e => {
+            e.preventDefault();
+            
+            // name and mark handling
+            const formData = new FormData(e.target);
+            const allValues = Object.fromEntries(formData.entries());
+            
+            const p1Name = allValues["p1-name"];
+            const p2Name = allValues["p2-name"];
+            const game = GameController(allValues);
+            screenControl = ScreenController(game, newMatchBtn);
+            // hide the name input
+            nameDiv.classList.add("hidden");
+            newMatchBtn.classList.remove("hidden")
+            // set the scoreboard names
+            p1NameDiv.textContent = p1Name;
+            p2NameDiv.textContent = p2Name;
+        })
+    }
+    function getMarkInput() {
+        // X or O event logic
+        nameDiv.addEventListener("change", e => {
 
-// duo player name inputs
-const nameDiv = document.querySelector("#name");
-nameDiv.classList.add("hidden");
-let playerOne = "";
-let playerTwo = "";
-nameDiv.addEventListener("submit", e => {
-    e.preventDefault();
-    playerOne = document.querySelector("#player-1").value;
-    playerTwo = document.querySelector("#player-2").value;
-    const game = GameController();
-    const screenControl = ScreenController(game);
-    nameDiv.classList.add("hidden");
-    p1name.textContent = `${playerOne}`;
-    p2name.textContent = `${playerTwo}`;
-})
+            if (e.target.name === "p1-mark") {
+                if (e.target.value == "O") {
+                    p2MarkX.checked = true;
+                } else if (e.target.value == "X") {
+                    p2MarkO.checked = true;
+                }
+            } else if (e.target.name == "p2-mark") {
+                if (e.target.value == "O") {
+                    p1MarkX.checked = true;
+                } else if (e.target.value == "X") {
+                    p1MarkO.checked = true;
+                }
+            }
+        })
+    }
+
+    function init() {
+        getDefaultGame();
+        getNameInput();
+        getMarkInput();
+    }
+
+    init();
+})();
 
 
-
-function ScreenController(game) {
+function ScreenController(game, newMatchBtn) {
     // init scores
     const p1score = document.querySelector("#player-1-score")
     const p2score = document.querySelector("#player-2-score")
     const screen = document.querySelector("#game-board");
-    newGameBtn.classList.remove("hidden");
+    
     
     function updateScreen() {
         
@@ -139,8 +185,8 @@ function ScreenController(game) {
         
     }
 
-    // end-game dialog
-    const dialog = document.querySelector("#new-game-dialog");
+    // end-round dialog
+    const dialog = document.querySelector("#new-round-dialog");
     const playAgainHeader = document.querySelector("#play-again-header");
 
     function playAgainWin() {
@@ -178,8 +224,9 @@ function ScreenController(game) {
     })
 
     // new game btn handler
-    newGameBtn.addEventListener("click", e => {
+    newMatchBtn.addEventListener("click", e => {
         game.resetBoard();
+        game.resetScores();
         updateScreen();
     })
     updateScreen();
@@ -192,21 +239,18 @@ function ScreenController(game) {
 }
 
 // game logic
-function GameController(
-    playerOneName = playerOne,
-    playerTwoName = playerTwo
-) {
+function GameController(allValues) {
 
     // player logic
     const players = [
         {
-            name: playerOneName,
-            mark: "O",
+            name: allValues['p1-name'],
+            mark: allValues['p1-mark'],
             score: 0
         },
         {
-            name: playerTwoName,
-            mark: "X",
+            name: allValues['p2-name'],
+            mark: allValues['p2-mark'],
             score: 0
         }
     ];
@@ -226,6 +270,11 @@ function GameController(
     const printNewRound = () => {
         board.printBoard();
         console.log(`${getActivePlayer().name}'s turn.`)
+    }
+
+    const resetScores = () => {
+        players[0].score = 0;
+        players[1].score = 0;
     }
 
     // game end checks
@@ -298,6 +347,7 @@ function GameController(
         getActivePlayer,
         getPlayers,
         getBoard: board.getBoard,
+        resetScores,
         resetBoard,
         checkWin,
         checkTie,
