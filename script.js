@@ -64,11 +64,13 @@ const GameSetup = (function() {
     const p2MarkX = document.querySelector('input[name="p2-mark"][value="X"]')
     gameSelect.classList.add("hidden");
     const newMatchBtn = document.querySelector("#new-match");
-    
+    const directions = document.querySelector("#turn-display");
     
 
 
     function getDefaultGame() {    
+
+        directions.textContent = "Please input your name(s)."
         // init default player names
         p1NameDiv.textContent = "Player 1";
         p2NameDiv.textContent = "Player 2";
@@ -235,6 +237,7 @@ function ScreenController(game, newMatchBtn) {
     updateScreen();
 
     return {
+        turnDisplay,
         updateScreen,
         playAgainWin,
         playAgainTie
